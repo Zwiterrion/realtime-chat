@@ -1,0 +1,64 @@
+---
+apiVersion: "proxy.otoroshi.io/v1"
+kind: "Route"
+spec:
+  _loc:
+    tenant: "default"
+    teams:
+    - "default"
+  name: "chat"
+  description: "Chat Inteface"
+  tags: []
+  metadata: {}
+  enabled: true
+  debug_flow: false
+  export_reporting: false
+  capture: false
+  groups:
+  - "default"
+  frontend:
+    domains:
+    - "chat.oto.tools"
+    strip_path: true
+    exact: false
+    headers: {}
+    query: {}
+    methods: []
+  backend:
+    targets:
+    - id: "target_1"
+      hostname: "localhost"
+      port: 5173
+      tls: false
+      weight: 1
+      predicate:
+        type: "AlwaysMatch"
+      protocol: "HTTP/1.1"
+      ip_address: null
+      tls_config:
+        certs: []
+        trusted_certs: []
+        enabled: false
+        loose: false
+        trust_all: false
+    root: "/"
+    rewrite: false
+    load_balancing:
+      type: "RoundRobin"
+    health_check:
+      enabled: false
+      url: ""
+      timeout: 5000
+      healthyStatuses: []
+      unhealthyStatuses: []
+  backend_ref: null
+  plugins:
+  - enabled: true
+    debug: false
+    plugin: "cp:otoroshi.next.plugins.AuthModule"
+    include: []
+    exclude: []
+    config:
+      pass_with_apikey: false
+      auth_module: null
+      module: "auth_mod_dev_f7b3446f-dee2-424f-849f-e6c1e372ae38"
